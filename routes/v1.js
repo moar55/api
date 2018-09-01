@@ -408,21 +408,53 @@ function addRoutes(app, peliasConfig) {
     ])
   };
 
+  function methodNotAllowedFallback(req,res) {
+    res.status(405).json({error: "method not allowed: invalid http method"});
+  }
+
 
   // static data endpoints
-  app.get ( base,                          routers.index );
-  app.get ( base + 'attribution',          routers.attribution );
-  app.get (        '/attribution',         routers.attribution );
-  app.get (        '/status',              routers.status );
+  app.route( base )
+      .get(routers.index)
+      .all(methodNotAllowedFallback);
+
+  app.route( base + 'attribution' )
+      .get(routers.attribution )
+      .all(methodNotAllowedFallback);
+
+  app.route( '/attribution' )
+      .get(routers.attribution )
+      .all(methodNotAllowedFallback);
+
+  app.route( '/status' )
+      .get(routers.status )
+      .all(methodNotAllowedFallback);
 
   // backend dependent endpoints
-  app.get ( base + 'place',                routers.place );
-  app.get ( base + 'autocomplete',         routers.autocomplete );
-  app.get ( base + 'search',               routers.search );
-  app.post( base + 'search',               routers.search );
-  app.get ( base + 'search/structured',    routers.structured );
-  app.get ( base + 'reverse',              routers.reverse );
-  app.get ( base + 'nearby',               routers.nearby );
+  app.route( base + 'place' )
+      .get(routers.place )
+      .all(methodNotAllowedFallback);
+  
+  app.route( base + 'autocomplete' )
+      .get(routers.autocomplete)
+      .all(methodNotAllowedFallback);
+
+  app.route( base + 'search')
+      .get(routers.search )
+      .post(routers.search)
+      .all( methodNotAllowedFallback );
+
+  app.route( base + 'search/structured' )
+      .get(routers.structured)
+      .all( methodNotAllowedFallback );
+
+  app.route( base + 'reverse' )
+      .get(routers.reverse)
+      .all( methodNotAllowedFallback );
+
+  app.route( base + 'nearby' )
+      .get(routers.nearby)
+      .all(methodNotAllowedFallback);
 
 }
 
